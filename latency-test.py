@@ -28,16 +28,16 @@ def ping_hosts(hosts):
     return;
 
 def write(hosts):
-    header = ''
-    result = ''
+    header = 'timestamp,'
+    result = time.strftime('%d/%m-%H:%M:%S') + ','
     
-    # If output file does not exist, create it with header row
+    # If output file does not exist, create the file and put in header row
     if not os.path.exists('./output-latency.txt'):
         for host in hosts:
             if hosts[host][2] == 1:
                 header = str(header) + str(host) + ','
 
-        output = open('./output.txt', 'w')
+        output = open('./output-latency.txt', 'w')
         output.write(str(header))
         output.write('\n')
         output.close
@@ -47,7 +47,7 @@ def write(hosts):
         if hosts[host][2] == 1:
             result = str(result) + str(hosts[host][3]) + ','
         
-    output = open('./output.txt', 'a')
+    output = open('./output-latency.txt', 'a')
     output.write(str(result))
     output.write('\n')
     output.close
@@ -88,7 +88,6 @@ def main():
         f = open(sys.argv[1], 'r')
         for entry in f:
             entry = entry.strip()
-            print(entry)
             threshold = entry.split(',')[2]
             threshold = float(threshold)
             hosts[entry.split(',')[0]] = [entry.split(',')[1], threshold, '', '']
